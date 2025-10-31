@@ -17,9 +17,11 @@ class EmailVerificationTest extends TestCase
     {
         $user = User::factory()->unverified()->create();
 
-        $response = $this->actingAs($user)->get(route('verification.notice'));
+        $response = $this->actingAs($user)->get('/verify-email');
 
-        $response->assertStatus(200);
+        $response
+            ->assertSeeVolt('pages.auth.verify-email')
+            ->assertStatus(200);
     }
 
     public function test_email_can_be_verified(): void
@@ -37,7 +39,6 @@ class EmailVerificationTest extends TestCase
         $response = $this->actingAs($user)->get($verificationUrl);
 
         Event::assertDispatched(Verified::class);
-
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
         $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
     }
