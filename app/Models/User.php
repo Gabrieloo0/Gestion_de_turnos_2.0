@@ -26,6 +26,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthdate' => 'date',
     ];
 
     // 🔹 Relaciones
@@ -42,5 +43,11 @@ class User extends Authenticatable
     public function turnosComoPaciente()
     {
         return $this->hasMany(Turno::class, 'paciente_id');
+    }
+
+    // 🔹 Scope para obtener solo pacientes
+    public function scopePacientes($q)
+    {
+        return $q->whereHas('tipoPersona', fn($t) => $t->where('nombre_tipo', 'Paciente'));
     }
 }
