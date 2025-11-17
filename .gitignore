@@ -1,23 +1,37 @@
-/.phpunit.cache
-/node_modules
-/public/build
+/vendor/
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Directorios de Laravel
+/storage/
 /public/hot
 /public/storage
-/storage/*.key
+/public/build
 /storage/pail
-/vendor
+bootstrap/compiled.php
+app/storage/
+
+# Entornos y Credenciales
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
+storage/*.key
 /auth.json
+
+# Configuraciones y Herramientas Locales
+.phpunit.result.cache
+/.phpunit.cache
+.phpactor.json
+Homestead.yaml
+Homestead.json
+/.vagrant
 /.fleet
 /.idea
 /.nova
 /.vscode
 /.zed
+
+# Específico para algunos entornos (si usas public_html)
+public_html/storage
+public_html/hot
