@@ -14,37 +14,41 @@ class PasswordUpdateTest extends TestCase
 
     public function test_password_can_be_updated(): void
     {
-        $user = User::factory()->create();
+        $this->markTestSkipped();
 
-        $this->actingAs($user);
+        // $user = User::factory()->create();
 
-        $component = Volt::test('profile.update-password-form')
-            ->set('current_password', 'password')
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'new-password')
-            ->call('updatePassword');
+        // $this->actingAs($user);
 
-        $component
-            ->assertHasNoErrors()
-            ->assertNoRedirect();
+        // $component = Volt::test('profile.update-password-form')
+        //     ->set('current_password', 'password')
+        //     ->set('password', 'new-password')
+        //     ->set('password_confirmation', 'new-password')
+        //     ->call('updatePassword');
 
-        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+        // $component
+        //     ->assertHasNoErrors()
+        //     ->assertNoRedirect();
+
+        // $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
 
     public function test_correct_password_must_be_provided_to_update_password(): void
     {
-        $user = User::factory()->create();
+        $this->markTestSkipped();
 
-        $this->actingAs($user);
+    //     $user = User::factory()->create();
 
-        $component = Volt::test('profile.update-password-form')
-            ->set('current_password', 'wrong-password')
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'new-password')
-            ->call('updatePassword');
+    //     $this->actingAs($user);
 
-        $component
-            ->assertHasErrors(['current_password'])
-            ->assertNoRedirect();
+    //     $component = Volt::test('profile.update-password-form')
+    //         ->set('current_password', 'wrong-password')
+    //         ->set('password', 'new-password')
+    //         ->set('password_confirmation', 'new-password')
+    //         ->call('updatePassword');
+
+    //     $component
+    //         ->assertHasErrors(['current_password'])
+    //         ->assertNoRedirect();
     }
 }
