@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\TipoPersona;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +30,11 @@ class CreateNewUser implements CreatesNewUsers
         $phone     = $input['phone'] ?? '';                     // string vacío si no viene
         $birthdate = $input['birthdate'] ?? '1970-01-01';       // fecha válida por defecto
 
+        $pacienteTipoId = TipoPersona::firstOrCreate(
+            ['nombre_tipo' => 'Paciente'],
+            ['created_at' => now(), 'updated_at' => now()]
+        )->id;
+
         return User::create([
             'name'      => $input['name'],
             'last_name' => $lastName,
@@ -36,6 +42,7 @@ class CreateNewUser implements CreatesNewUsers
             'birthdate' => $birthdate,
             'email'     => $input['email'],
             'password'  => Hash::make($input['password']),      // ¡IMPORTANTE!
+            'tipo_persona_id' => $pacienteTipoId,
         ]);
     }
 }

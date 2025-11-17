@@ -50,4 +50,25 @@ class User extends Authenticatable
     {
         return $q->whereHas('tipoPersona', fn($t) => $t->where('nombre_tipo', 'Paciente'));
     }
+
+    public function roleName(): ?string
+    {
+        return $this->tipoPersona?->nombre_tipo;
+    }
+
+    public function hasRole(string ...$roles): bool
+    {
+        $currentRole = $this->roleName();
+
+        if (!$currentRole) {
+            return false;
+        }
+
+        return in_array($currentRole, $roles, true);
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->hasRole('Super Admin', 'Profesional');
+    }
 }

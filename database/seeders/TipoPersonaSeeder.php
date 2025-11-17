@@ -9,7 +9,7 @@ class TipoPersonaSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (['Paciente','Profesional','Admin'] as $t) {
+        foreach (['Paciente','Profesional','Super Admin'] as $t) {
             DB::table('tipo_persona')->updateOrInsert(
                 ['nombre_tipo' => $t],
                 ['created_at' => now(), 'updated_at' => now()]

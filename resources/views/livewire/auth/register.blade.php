@@ -1,66 +1,64 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
-
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
-            @csrf
-
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
-
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
-
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
-        </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta</title>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+</head>
+<body class="min-h-screen bg-gray-100 antialiased">
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-md">
+        <div class="flex justify-center mb-8">
+            <x-application-logo class="w-12 h-12 text-gray-700"/>
         </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                @csrf
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" name="name" value="{{ old('name') }}" required autofocus
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" name="email" value="{{ old('email') }}" required
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" name="password" required
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('password') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Confirmar contraseña</label>
+                    <input type="password" name="password_confirmation" required
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('password_confirmation') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <button type="submit"
+                        class="w-full inline-flex justify-center px-4 py-2.5 rounded-md
+                               bg-gray-800 text-white font-semibold hover:bg-gray-900
+                               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+                    CREAR CUENTA
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center text-sm text-gray-600 mt-4">
+            ¿Ya tenés cuenta?
+            <a href="{{ route('login') }}" class="text-indigo-600 hover:underline">Iniciar sesión</a>
+        </p>
     </div>
-</x-layouts.auth>
+</div>
+</body>
+</html>

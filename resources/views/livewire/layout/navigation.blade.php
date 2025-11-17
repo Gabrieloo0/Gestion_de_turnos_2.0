@@ -12,7 +12,7 @@ new class extends Component
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        $this->redirectRoute('login', navigate: true);
     }
 }; ?>
 
@@ -21,18 +21,39 @@ new class extends Component
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
+                @php
+                    $user = auth()->user();
+                    $isEmployee = $user?->hasRole('Super Admin', 'Profesional') ?? false;
+                    $isAdmin = $user?->hasRole('Super Admin') ?? false;
+                    $homeRoute = $isEmployee ? 'dashboard' : 'welcome';
+                    $homeLabel = $isEmployee ? __('Dashboard') : __('Inicio');
+                    if (! $user) {
+                        $homeRoute = 'login';
+                        $homeLabel = __('Inicio');
+                    }
+                @endphp
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
+                    <a href="{{ route($homeRoute) }}" wire:navigate>
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route($homeRoute)" :active="request()->routeIs($homeRoute)" wire:navigate>
+                        {{ $homeLabel }}
                     </x-nav-link>
+                    @if ($isEmployee)
+                        <x-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')" wire:navigate>
+                            {{ __('Pacientes') }}
+                        </x-nav-link>
+                    @endif
+                    @if ($isAdmin)
+                        <x-nav-link :href="route('empleados.create')" :active="request()->routeIs('empleados.create')" wire:navigate>
+                            {{ __('Nuevo empleado') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -81,9 +102,19 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route($homeRoute)" :active="request()->routeIs($homeRoute)" wire:navigate>
+                {{ $homeLabel }}
             </x-responsive-nav-link>
+            @if ($isEmployee)
+                <x-responsive-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')" wire:navigate>
+                    {{ __('Pacientes') }}
+                </x-responsive-nav-link>
+            @endif
+            @if ($isAdmin)
+                <x-responsive-nav-link :href="route('empleados.create')" :active="request()->routeIs('empleados.create')" wire:navigate>
+                    {{ __('Nuevo empleado') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

@@ -1,31 +1,47 @@
 <?php
 
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Features;
 
-Route::middleware('guest')->group(function () {
-    Volt::route('register', 'pages.auth.register')
+// Login
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('login');
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware(['guest']);
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('logout');
+
+// Register (se habilita porque en config/fortify.php tenés Features::registration())
+if (Features::enabled(Features::registration())) {
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->middleware(['guest'])
         ->name('register');
 
-    Volt::route('login', 'pages.auth.login')
-        ->name('login');
+    Route::post('/register', [RegisteredUserController::class, 'store'])
+        ->middleware(['guest']);
+}
 
-    Volt::route('forgot-password', 'pages.auth.forgot-password')
-        ->name('password.request');
+// Forgot / Reset password
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('password.request');
 
-    Volt::route('reset-password/{token}', 'pages.auth.reset-password')
-        ->name('password.reset');
-});
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.email');
 
-Route::middleware('auth')->group(function () {
-    Volt::route('verify-email', 'pages.auth.verify-email')
-        ->name('verification.notice');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('password.reset');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
-    Volt::route('confirm-password', 'pages.auth.confirm-password')
-        ->name('password.confirm');
-});
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.update');

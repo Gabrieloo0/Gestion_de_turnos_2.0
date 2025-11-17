@@ -35,8 +35,12 @@
                     <td class="px-4 py-2">{{ $u->email }}</td>
                     <td class="px-4 py-2">{{ $u->phone }}</td>
                     <td class="px-4 py-2">
-                        <a href="{{ route('pacientes.edit', $u->id) }}"
-                           class="text-blue-600 underline">Editar</a>
+                        @if (Route::has('pacientes.edit'))
+                            <a href="{{ route('pacientes.edit', $u->id) }}"
+                               class="text-blue-600 underline">Editar</a>
+                        @else
+                            <span class="text-gray-400">Sin edición</span>
+                        @endif
                     </td>
                 </tr>
             @empty

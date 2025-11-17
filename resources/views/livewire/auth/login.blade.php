@@ -1,68 +1,72 @@
-<?php
-
-use App\Livewire\Forms\LoginForm;
-use Illuminate\Support\Facades\Session;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
-
-new #[Layout('layouts.guest')] class extends Component
-{
-    public LoginForm $form;
-
-    public function login(): void
-    {
-        $this->validate();
-        $this->form->authenticate();
-        Session::regenerate();
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
-    }
-}; ?>
-
-<div>
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form wire:submit="login">
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full"
-                          type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+</head>
+<body class="min-h-screen bg-gray-100 antialiased">
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-md">
+        <div class="flex justify-center mb-8">
+            <x-application-logo class="w-12 h-12 text-gray-700"/>
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                          type="password" name="password" required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
-        </div>
-
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox"
-                       class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <!-- ACCIONES -->
-        <div class="flex items-center justify-between gap-4 mt-4">
-            <a href="{{ url('/register') }}" wire:navigate
-               class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Crear cuenta') }}
-            </a>
-
-            <div class="flex items-center gap-3">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                       href="{{ route('password.request') }}" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-primary-button>
-                    {{ __('Log in') }}
-                </x-primary-button>
+        @if (session('status'))
+            <div class="mb-4 text-sm text-green-700 bg-green-100 border border-green-200 rounded-md px-3 py-2">
+                {{ session('status') }}
             </div>
+        @endif
+
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <form method="POST" action="{{ route('login') }}" class="space-y-4">
+                @csrf
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" name="password" required
+                           class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    @error('password') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="inline-flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" name="remember" class="rounded border-gray-300 text-indigo-600">
+                        Recuérdame
+                    </label>
+
+                    @if (Route::has('password.request'))
+                        <a class="text-sm text-indigo-600 hover:underline" href="{{ route('password.request') }}">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    @endif
+                </div>
+
+                <button type="submit"
+                        class="w-full inline-flex justify-center px-4 py-2.5 rounded-md
+                               bg-gray-800 text-white font-semibold hover:bg-gray-900
+                               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+                    INICIAR SESIÓN
+                </button>
+            </form>
         </div>
-    </form>
+
+        {{-- ✅ Link de registro visible siempre que la ruta exista --}}
+        @if (Route::has('register'))
+            <p class="text-center text-sm text-gray-600 mt-4">
+                ¿Nuevo por acá?
+                <a href="{{ route('register') }}" class="text-indigo-600 hover:underline">Crear cuenta</a>
+            </p>
+        @endif
+    </div>
 </div>
+</body>
+</html>
