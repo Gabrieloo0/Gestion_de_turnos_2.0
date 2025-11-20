@@ -23,7 +23,12 @@
                            class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
                     @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                 </div>
-
+                <div>
+                    <label class="block text-sm text-gray-700 mb-1">Teléfono</label>
+                    <input type="text" name="phone" value="{{ old('phone') }}" required
+                        class="w-full rounded-md border-gray-300 focus:border-blue-kine focus:ring-blue-kine">
+                    @error('phone') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
                 <div>
                     <label class="block text-sm text-gray-700 mb-1">Correo electrónico</label>
                     <input type="email" name="email" value="{{ old('email') }}" required
