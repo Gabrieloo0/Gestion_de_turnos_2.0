@@ -10,8 +10,7 @@ class Especialidad extends Model
     protected $fillable = ['nombre_especialidad'];
 
     public function servicios()
-    {
-        
+    { 
         return $this->hasMany(Servicio::class, 'especialidad_id');
     }
 }
