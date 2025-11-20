@@ -2,61 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-Demibold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-MediumItalic.ttf') format('truetype');
-    font-weight: 500;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-DemiboldItalic.ttf') format('truetype');
-    font-weight: 600;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Arsenica';
-    src: url('/fonts/ArsenicaTrial-BoldItalic.ttf') format('truetype');
-    font-weight: 700;
-    font-style: italic;
-}
-
 @layer base {
     body {
         font-family: 'Nunito Sans', sans-serif;
     }
 
     h1, h2, h3, .font-title {
-        font-family: 'Arsenica', serif !important;
+        font-family: 'Montserrat', sans-serif !important;
     }
 }

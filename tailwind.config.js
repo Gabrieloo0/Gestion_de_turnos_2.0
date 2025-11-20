@@ -19,7 +19,7 @@ export default {
 
             fontFamily: {
                 sans: ['"Nunito Sans"', ...defaultTheme.fontFamily.sans],
-                title: ['"Arsenica"', 'serif'],
+                title: ['"Montserrat"', ...defaultTheme.fontFamily.sans],
             },
 
             animation: {
