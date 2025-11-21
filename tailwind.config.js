@@ -1,6 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -11,8 +12,25 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                primary: '#06c4a0',
+                primaryDark: '#007ee5',
+            },
+
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Nunito Sans"', ...defaultTheme.fontFamily.sans],
+                title: ['"Montserrat"', ...defaultTheme.fontFamily.sans],
+            },
+
+            animation: {
+                'fade-slide': 'fadeSlide 0.8s ease-out',
+            },
+
+            keyframes: {
+                fadeSlide: {
+                    '0%': { opacity: 0, transform: 'translateY(15px)' },
+                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
             },
         },
     },

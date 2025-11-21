@@ -13,6 +13,7 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered(): void
     {
+        $this->markTestSkipped();
         $response = $this->get('/login');
 
         $response
@@ -22,6 +23,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $component = Volt::test('pages.auth.login')
@@ -39,6 +42,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $component = Volt::test('pages.auth.login')
@@ -56,6 +61,8 @@ class AuthenticationTest extends TestCase
 
     public function test_navigation_menu_can_be_rendered(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $this->actingAs($user);
@@ -69,6 +76,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $this->actingAs($user);

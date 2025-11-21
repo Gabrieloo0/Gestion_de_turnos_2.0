@@ -17,18 +17,16 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'name'      => ['required', 'string', 'max:255'],
-            // pueden venir o no; si tu BD los exige NOT NULL, les pondremos defaults abajo
             'last_name' => ['nullable','string','max:255'],
-            'phone'     => ['nullable','string','max:30'],
+            'phone'     => ['required','string','max:15'],
             'birthdate' => ['nullable','date'],
             'email'     => ['required','string','email','max:255', Rule::unique(User::class)],
             'password'  => $this->passwordRules(),
         ])->validate();
 
-        // Fallbacks para NO romper si tu BD exige NOT NULL en estos campos
-        $lastName  = $input['last_name'] ?? '';                 // string vacío si no viene
-        $phone     = $input['phone'] ?? '';                     // string vacío si no viene
-        $birthdate = $input['birthdate'] ?? '1970-01-01';       // fecha válida por defecto
+        $lastName  = $input['last_name'] ?? '';                
+        $phone     = $input['phone'] ?? '';                    
+        $birthdate = $input['birthdate'] ?? '1970-01-01';      
 
         $pacienteTipoId = TipoPersona::firstOrCreate(
             ['nombre_tipo' => 'Paciente'],
@@ -41,7 +39,7 @@ class CreateNewUser implements CreatesNewUsers
             'phone'     => $phone,
             'birthdate' => $birthdate,
             'email'     => $input['email'],
-            'password'  => Hash::make($input['password']),      // ¡IMPORTANTE!
+            'password'  => Hash::make($input['password']),
             'tipo_persona_id' => $pacienteTipoId,
         ]);
     }

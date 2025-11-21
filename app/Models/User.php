@@ -29,7 +29,6 @@ class User extends Authenticatable
         'birthdate' => 'date',
     ];
 
-    // 🔹 Relaciones
     public function tipoPersona()
     {
         return $this->belongsTo(TipoPersona::class, 'tipo_persona_id');
@@ -45,7 +44,6 @@ class User extends Authenticatable
         return $this->hasMany(Turno::class, 'paciente_id');
     }
 
-    // 🔹 Scope para obtener solo pacientes
     public function scopePacientes($q)
     {
         return $q->whereHas('tipoPersona', fn($t) => $t->where('nombre_tipo', 'Paciente'));
@@ -63,7 +61,7 @@ class User extends Authenticatable
         if (!$currentRole) {
             return false;
         }
-
+        
         return in_array($currentRole, $roles, true);
     }
 

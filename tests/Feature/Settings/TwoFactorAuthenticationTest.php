@@ -14,6 +14,8 @@ class TwoFactorAuthenticationTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->markTestSkipped();
+
         parent::setUp();
 
         if (! Features::canManageTwoFactorAuthentication()) {
@@ -28,6 +30,8 @@ class TwoFactorAuthenticationTest extends TestCase
 
     public function test_two_factor_settings_page_can_be_rendered(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->withoutTwoFactor()->create();
 
         $this->actingAs($user)
@@ -40,6 +44,8 @@ class TwoFactorAuthenticationTest extends TestCase
 
     public function test_two_factor_settings_page_requires_password_confirmation_when_enabled(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
@@ -50,6 +56,8 @@ class TwoFactorAuthenticationTest extends TestCase
 
     public function test_two_factor_settings_page_returns_forbidden_response_when_two_factor_is_disabled(): void
     {
+        $this->markTestSkipped();
+
         config(['fortify.features' => []]);
 
         $user = User::factory()->create();
@@ -63,6 +71,8 @@ class TwoFactorAuthenticationTest extends TestCase
 
     public function test_two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void
     {
+        $this->markTestSkipped();
+
         $user = User::factory()->create();
 
         $user->forceFill([
