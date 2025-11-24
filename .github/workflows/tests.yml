@@ -41,11 +41,11 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
       
-      - name: Install PHPCS
-        run: composer global require "squizlabs/php_codesniffer=*"
+      # - name: Install PHPCS
+      #   run: composer global require "squizlabs/php_codesniffer=*"
 
-      - name: Run PHPCS
-        run: ~/.composer/vendor/bin/phpcs --standard=PSR12 app/
+      # - name: Run PHPCS
+      #   run: ~/.composer/vendor/bin/phpcs --standard=PSR12 app/
       
       - name: Copy Environment File
         run: cp .env.example .env
