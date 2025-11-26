@@ -17,6 +17,7 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // Reemplazar la respuesta por nuestras clases personalizadas
         $this->app->singleton(\Laravel\Fortify\Contracts\LoginResponse::class, LoginResponse::class);
         $this->app->singleton(\Laravel\Fortify\Contracts\RegisterResponse::class, RegisterResponse::class);
     }
@@ -36,16 +37,9 @@ class FortifyServiceProvider extends ServiceProvider
 
     private function configureViews(): void
     {
-        // 👇 Tus blades están en resources/views/livewire/auth/*.blade.php
+        // Vistas en Livewire
         Fortify::loginView(fn () => view('livewire.auth.login'));
         Fortify::registerView(fn () => view('livewire.auth.register'));
-
-        // (opcional, si los tenés)
-        // Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
-        // Fortify::resetPasswordView(fn ($request) => view('livewire.auth.reset-password', ['request' => $request]));
-        // Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
-        // Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
-        // Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
     }
 
     private function configureRateLimiting(): void
@@ -55,7 +49,10 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(
+                Str::lower($request->input(Fortify::username())) . '|' . $request->ip()
+            );
+
             return Limit::perMinute(5)->by($throttleKey);
         });
     }

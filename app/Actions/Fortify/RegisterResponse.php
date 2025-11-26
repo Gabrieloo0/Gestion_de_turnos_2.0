@@ -3,28 +3,23 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 
 class RegisterResponse implements RegisterResponseContract
 {
     public function toResponse($request): RedirectResponse
     {
-        $user = $request->user();
+        // 👉 CERRAR SESIÓN DEL USUARIO RECIÉN REGISTRADO
+        Auth::guard(config('fortify.guard'))->logout();
 
-        return redirect()->intended($this->redirectPathFor($user));
-    }
+        // Invalidar la sesión actual y regenerar el token CSRF
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    protected function redirectPathFor($user): string
-    {
-        if ($user && $user->hasRole('Paciente')) {
-            return route('welcome');
-        }
-
-        if ($user && $user->hasRole('Super Admin', 'Profesional')) {
-            return route('dashboard');
-        }
-
-        return route('dashboard');
+        // 👉 REDIRIGIR SIEMPRE AL LOGIN CON MENSAJE
+        return redirect()
+            ->route('login')
+            ->with('status', 'Cuenta creada correctamente. Ahora iniciá sesión.');
     }
 }
-
